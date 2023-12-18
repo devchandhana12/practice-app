@@ -4,7 +4,8 @@ interface ButtonCompProps {
   label: string;
   variant: "primary" | "secondary" | "danger" | "success";
   color: string;
-  onClick: () => void;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
 }
 
 const meta = {
@@ -24,5 +25,6 @@ export const DefaultButton: Story = {
     variant: "primary",
     label: "Click me!",
     color: "purple",
+    type: "button",
   },
 };
