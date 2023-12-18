@@ -4,9 +4,10 @@ interface ButtonProps {
   label?: string;
   variant?: "primary" | "secondary" | "danger" | "success";
   color?: string;
-  onClick: () => void;
+  onClick?: () => void;
   style?: any;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 const ButtonComp: React.FC<ButtonProps> = ({
   label,
@@ -14,6 +15,7 @@ const ButtonComp: React.FC<ButtonProps> = ({
   color,
   onClick,
   style,
+  type,
   disabled,
   ...props
 }) => {
@@ -24,6 +26,7 @@ const ButtonComp: React.FC<ButtonProps> = ({
       style={{ backgroundColor: color, ...style }}
       {...props}
       disabled
+      type={type}
     >
       {label ? label : "Submit"}
     </Button>

@@ -2,11 +2,22 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import { LoginImg } from "../assets";
 import CardComp from "../stories/CardComp";
-import ButtonComp from "../stories/Button";
+import { useNavigate } from "react-router-dom";
+import { createClient } from "@supabase/supabase-js";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const navigate = useNavigate();
 
+  // supabase auth details
+  const supaUrl = "https://flfswbbkbwfdkdnizwai.supabase.co";
+  const supaKey =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnN3YmJrYndmZGtkbml6d2FpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDI2MzcyNjUsImV4cCI6MjAxODIxMzI2NX0.zQLEGkYaxH3xMx0Nz0EQpD7IjadYSbt7qbzcV0bQelo";
+  const supabase = createClient(supaUrl, supaKey);
+
+  const { login, user } = React.useContext(AuthContext);
+  console.log(user);
   return (
     <div className="d-flex align-items-center justify-content-around">
       <div style={{ width: "45%" }}>
@@ -17,8 +28,20 @@ const Login = () => {
           <h6 style={{ fontStyle: "italic" }}>Login to access content</h6>
           <Formik
             initialValues={{ email: "", password: "" }}
-            onSubmit={() => {
-              // Handle form submission logic
+            onSubmit={async (values, { resetForm }) => {
+              setIsSubmitting(true);
+              await supabase.auth
+                .signInWithPassword({
+                  email: values.email,
+                  password: values.password,
+                })
+                .then((data) => {
+                  console.log(data.data.user);
+                  login(data.data.user?.user_metadata.username);
+                  resetForm();
+                  navigate("/home");
+                })
+                .catch((err) => console.log(err));
             }}
           >
             {(formikProps) => (
@@ -55,12 +78,21 @@ const Login = () => {
                     margin: "10px",
                   }}
                 />
-                <ButtonComp
-                  color="#7E30E1"
-                  onClick={() => {}}
-                  style={{ width: "300px", borderRadius: 15 }}
+                <button
+                  type="submit"
                   disabled={isSubmitting}
-                />
+                  style={{
+                    background: "#7E30EC",
+                    color: "white",
+                    width: 300,
+                    borderRadius: 15,
+                    outline: "none",
+                    padding: 8,
+                    border: "none",
+                  }}
+                >
+                  Submit
+                </button>
               </Form>
             )}
           </Formik>
