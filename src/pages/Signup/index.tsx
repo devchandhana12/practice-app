@@ -1,51 +1,80 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { LoginImg } from "../assets";
-import CardComp from "../stories/CardComp";
-import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
-import { AuthContext } from "../contexts/AuthContext";
+import { SignUpImg } from "../../assets";
+import CardComp from "../../stories/CardComp";
+import ButtonComp from "../../stories/Button";
+import { useNavigate } from "react-router-dom";
+import Login from "../Login";
 
-const Login = () => {
+const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const navigate = useNavigate();
-
   // supabase auth details
   const supaUrl = "https://flfswbbkbwfdkdnizwai.supabase.co";
   const supaKey =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsZnN3YmJrYndmZGtkbml6d2FpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDI2MzcyNjUsImV4cCI6MjAxODIxMzI2NX0.zQLEGkYaxH3xMx0Nz0EQpD7IjadYSbt7qbzcV0bQelo";
   const supabase = createClient(supaUrl, supaKey);
-
-  const { login, user } = React.useContext(AuthContext);
-  console.log(user);
   return (
     <div className="d-flex align-items-center justify-content-around">
       <div style={{ width: "45%" }}>
-        <img src={LoginImg} alt="login img" className="img-fluid" />
+        <img src={SignUpImg} alt="signup img" className="img-fluid" />
       </div>
       <div>
         <CardComp>
-          <h6 style={{ fontStyle: "italic" }}>Login to access content</h6>
+          <h6>Enter the details below to sign up</h6>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ email: "", password: "", username: "" }}
             onSubmit={async (values, { resetForm }) => {
               setIsSubmitting(true);
-              await supabase.auth
-                .signInWithPassword({
+              try {
+                const { data, error } = await supabase.auth.signUp({
                   email: values.email,
                   password: values.password,
-                })
-                .then((data) => {
-                  console.log(data.data.user);
-                  login(data.data.user?.user_metadata.username);
-                  resetForm();
-                  navigate("/home");
-                })
-                .catch((err) => console.log(err));
+                  options: {
+                    data: {
+                      username: values.username,
+                    },
+                  },
+                });
+
+                if (error) {
+                  console.error(error);
+                  return;
+                }
+
+                // If signup is successful, update user data
+                await supabase
+                  .from("users")
+                  .update({ username: values.username })
+                  .eq("id", data?.user?.id);
+
+                console.log(data);
+                resetForm();
+                navigate("/login");
+              } finally {
+                setIsSubmitting(false);
+              }
             }}
           >
             {(formikProps) => (
               <Form className="d-flex flex-column align-items-center">
+                <Field
+                  type="text"
+                  name="username"
+                  placeholder="Enter user name"
+                  style={{
+                    padding: "10px",
+                    border: "1px solid #ccc",
+                    borderRadius: "15px",
+                    background: "transparent",
+                    transition: "background 0.3s",
+                    ":focus": { background: "#e6e6e6" },
+                    color: "white",
+                    width: "300px",
+                    margin: "10px",
+                  }}
+                />
                 <Field
                   type="email"
                   name="email"
@@ -96,13 +125,9 @@ const Login = () => {
               </Form>
             )}
           </Formik>
-          <p className="mt-3" style={{ fontSize: 14 }}>
-            Don't have an account !! feel free to <a href="/Signup">Signup</a>
-          </p>
         </CardComp>
       </div>
     </div>
   );
 };
-
-export default Login;
+export default SignUp;

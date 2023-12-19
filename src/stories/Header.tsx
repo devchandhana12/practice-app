@@ -1,66 +1,78 @@
 import React from "react";
-
+import Navbar from "react-bootstrap/Navbar";
+import { FaSearch } from "react-icons/fa";
 import ButtonComp from "./Button";
-import "./header.css";
-
-type User = {
-  name: string;
-};
+import { AuthContext } from "../contexts/AuthContext";
 
 interface HeaderProps {
-  user?: User;
-  onLogin: () => void;
-  onLogout: () => void;
-  onCreateAccount: () => void;
+  value?: any;
+  onChange?: () => void;
+  user?: string;
 }
-
-export const Header = ({
-  user,
-  onLogin,
-  onLogout,
-  onCreateAccount,
-}: HeaderProps) => (
-  <header>
-    <div className="storybook-header">
+const Header: React.FC<HeaderProps> = ({ value, onChange, user }) => {
+  // const navigate = useNavigate();
+  const { logout } = React.useContext(AuthContext);
+  return (
+    <Navbar
+      className="d-flex align-items-center justify-content-around shadow-lg"
+      style={{ height: 70, backgroundColor: "#3559E0" }}
+    >
+      {/* <Container> */}
+      <Navbar.Brand
+        href="#home"
+        className="text-white"
+        style={{ fontWeight: "bolder", fontStyle: "italic" }}
+      >
+        Fakestore
+      </Navbar.Brand>
+      {/* </Container> */}
       <div>
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 32 32"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          className="d-flex align-items-center m-5 p-2 rounded"
+          style={{ backgroundColor: "#3081D0" }}
         >
-          <g fill="none" fillRule="evenodd">
-            <path
-              d="M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z"
-              fill="#FFF"
-            />
-            <path
-              d="M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z"
-              fill="#555AB9"
-            />
-            <path
-              d="M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z"
-              fill="#91BAF8"
-            />
-          </g>
-        </svg>
-        <h1>Acme</h1>
+          <input
+            placeholder="Search"
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              outline: "none",
+              color: "white",
+              width: 450,
+            }}
+            value={value}
+            onChange={onChange}
+          />
+          <FaSearch size={22} />
+        </div>
       </div>
-      <div>
+      <div className="d-flex align-items-center ">
         {user ? (
-          <>
-            <span className="welcome">
-              Welcome, <b>{user.name}</b>!
-            </span>
-            <ButtonComp onClick={onLogout} label="Log out" />
-          </>
+          <p className="text-white mt-3">Welcome back {user}</p>
         ) : (
-          <>
-            <ButtonComp onClick={onLogin} label="Log in" />
-            <ButtonComp onClick={onCreateAccount} label="Sign up" />
-          </>
+          <a
+            href="/login"
+            // className="text-white"
+            style={{
+              color: "white",
+              // textDecoration: "none",
+              fontSize: 16,
+              fontWeight: "bolder",
+              fontStyle: "italic",
+            }}
+          >
+            Login
+          </a>
+          // <ButtonComp label="Login" onClick={() => navigate("/login")} />
         )}
+        <ButtonComp
+          label="Logout"
+          variant="danger"
+          style={{ marginRight: 20, marginLeft: 20 }}
+          onClick={() => logout()}
+        />
       </div>
-    </div>
-  </header>
-);
+    </Navbar>
+  );
+};
+export default Header;
