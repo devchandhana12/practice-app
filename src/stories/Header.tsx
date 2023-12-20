@@ -4,11 +4,16 @@ import { FaSearch } from "react-icons/fa";
 import ButtonComp from "./Button";
 import { AuthContext } from "../contexts/AuthContext";
 
+type User = {
+  user: string;
+} | null;
+
 interface HeaderProps {
   value?: any;
   onChange?: () => void;
-  user?: string;
+  user?: User;
 }
+
 const Header: React.FC<HeaderProps> = ({ value, onChange, user }) => {
   // const navigate = useNavigate();
   const { logout } = React.useContext(AuthContext);
@@ -48,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({ value, onChange, user }) => {
       </div>
       <div className="d-flex align-items-center ">
         {user ? (
-          <p className="text-white mt-3">Welcome back {user}</p>
+          <p className="text-white mt-3">Welcome back {user.user}</p>
         ) : (
           <a
             href="/login"

@@ -1,11 +1,12 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, CSSProperties } from "react";
 import { Card } from "react-bootstrap";
-import PropTypes from "prop-types";
+
 interface CardCompProps {
   children: ReactNode;
+  style?: CSSProperties;
 }
 
-const CardComp: React.FC<CardCompProps> = ({ children }) => {
+const CardComp: React.FC<CardCompProps> = ({ children, style }) => {
   return (
     <Card
       className={" shadow-lg text-white "}
@@ -14,6 +15,7 @@ const CardComp: React.FC<CardCompProps> = ({ children }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        ...style,
       }}
     >
       <Card.Body>{children}</Card.Body>
@@ -22,7 +24,3 @@ const CardComp: React.FC<CardCompProps> = ({ children }) => {
 };
 
 export default CardComp;
-
-CardComp.propTypes = {
-  children: PropTypes.any.isRequired,
-};
