@@ -2,25 +2,24 @@ import * as React from "react";
 
 type User = {
   user: string;
-};
+} | null;
 
 interface AuthContextProps {
-  user: User | null;
-  login: (userData: string | null) => void; // Adjust the login function type
+  user: User;
+  login: (userData: string | undefined) => void;
   logout: () => void;
 }
 
 export const AuthContext = React.createContext<AuthContextProps>({
   user: null,
-  login: (userData: string | null) => {},
+  login: (userData: string | undefined) => {},
   logout: () => {},
 });
 
 const AuthProvider: React.FC<React.ReactNode | any> = ({ children }) => {
-  const [user, setUser] = React.useState<User | null>(null);
+  const [user, setUser] = React.useState<User>(null);
 
-  const login = (userData: string | null) => {
-    // Assuming that userData is a string representing the username
+  const login = (userData: string | undefined) => {
     setUser(userData ? { user: userData } : null);
   };
 
