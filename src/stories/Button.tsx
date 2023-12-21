@@ -1,35 +1,34 @@
 import React from "react";
-import { Button } from "react-bootstrap";
-interface ButtonProps {
-  label?: string;
-  variant?: "primary" | "secondary" | "danger" | "success";
+import { Button, ButtonProps as BootstrapButtonProps } from "react-bootstrap";
+
+interface ButtonProps extends BootstrapButtonProps {
+  label?: string | number;
   color?: string;
-  onClick?: () => void;
-  style?: any;
-  disabled?: boolean;
-  type?: "button" | "submit" | "reset";
 }
+
 const ButtonComp: React.FC<ButtonProps> = ({
   label,
   variant,
   color,
-  onClick,
   style,
   type,
   disabled,
-  ...props
+  onClick,
+  ...rest
 }) => {
   return (
     <Button
       variant={variant}
-      onClick={onClick}
+      onClick={onClick} // Include onClick in the Button component
       style={{ backgroundColor: color, ...style }}
-      {...props}
-      disabled
+      disabled={disabled}
       type={type}
+      {...rest}
+      className="fs-6 fw-bold fst-italic"
     >
-      {label ? label : "Submit"}
+      {label}
     </Button>
   );
 };
+
 export default ButtonComp;
