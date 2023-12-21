@@ -21,6 +21,7 @@ interface Product {
 const Home = () => {
   const [data, setData] = React.useState<Product[] | undefined>(undefined);
   const [categories, setCategories] = React.useState([]);
+  const [cartValue, setCartValue] = React.useState<number>(0);
   React.useEffect(() => {
     (async () => {
       await axios
@@ -33,9 +34,12 @@ const Home = () => {
         .catch((e) => console.log(e));
     })();
   }, []);
-
+  console.log(cartValue);
+  const handleCart = () => {
+    alert(cartValue);
+    setCartValue(cartValue + 1);
+  };
   const { user } = React.useContext(AuthContext);
-  console.log(user);
   return (
     <div>
       <Header user={user} />
@@ -89,9 +93,24 @@ const Home = () => {
                       </p>
                     </p>
                     <div className="ms-1">
-                      <ButtonComp label="-" variant="danger" color="black" />
-                      <ButtonComp label="0" disabled color="black" />
-                      <ButtonComp label="+" variant="success" color="black" />
+                      <ButtonComp
+                        label="-"
+                        variant="danger"
+                        color="black"
+                        onClick={() => {
+                          if (cartValue > 0) {
+                            setCartValue(cartValue - 1);
+                          }
+                        }}
+                      />
+                      <ButtonComp label={cartValue} disabled color="black" />
+                      <ButtonComp
+                        label="+"
+                        variant="success"
+                        color="black"
+                        type="button"
+                        onClick={handleCart}
+                      />
                     </div>
                   </div>
                 </div>
