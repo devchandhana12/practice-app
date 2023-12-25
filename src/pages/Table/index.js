@@ -4,24 +4,32 @@ import {
   useReactTable,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
+import Filter from "./Filter";
+import { data as FData } from "./data";
+import DynamicTable from "./Table";
 
+// TODO: practice filtering, sorting and pagination tomorrow = 22/12/23
+// FIXME: Also, use memo and other hooks to resolve the issue
 const Table = () => {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState(FData);
+  const [columnFilters, setColumnFilters] = React.useState([]);
 
   // api call
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(
-          "https://randomuser.me/api/?results=100"
-        );
-        setData(response.data.results);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://randomuser.me/api/?results=100"
+  //       );
+  //       setData(response.data.results);
+  //       console.log(response.data.results);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, [setData]);
 
   // Define custom cell renderer for the "Name and Email" column
   const nameAndEmailCellRenderer = (props) => {
@@ -47,66 +55,104 @@ const Table = () => {
     data,
     columns: [
       {
-        accessorKey: "picture",
-        Header: "Picture",
+        accessorKey: "id",
+        header: "ID",
         cell: (props) => (
-          <div>
-            <img
-              src={props.getValue()?.medium}
-              alt="person logo"
-              style={{ borderRadius: 30 }}
-            />
-          </div>
+          <p style={{ textAlign: "center" }}>{props.getValue()}</p>
+        ),
+      },
+      {
+        accessorKey: "email",
+        header: "Email",
+        cell: (props) => (
+          <p style={{ textAlign: "center" }}>{props.getValue()}</p>
         ),
       },
       {
         accessorKey: "name",
-        Header: "Contact Info",
-        cell: nameAndEmailCellRenderer,
+        header: "Name",
+        cell: (props) => (
+          <p style={{ textAlign: "center" }}>{props.getValue()}</p>
+        ),
       },
       {
-        accessorKey: "gender",
-        Header: "Gender",
+        accessorKey: "passed",
+        header: "Passed",
         cell: (props) => (
           <p
             style={{
-              backgroundColor: props.getValue() === "male" ? "teal" : "purple",
               textAlign: "center",
+              backgroundColor: props.getValue() === true ? "teal" : "purple",
               borderRadius: 10,
             }}
           >
-            {props.getValue()}
+            {props.getValue() === true ? "Yes" : "No"}
           </p>
         ),
       },
-      {
-        accessorKey: "location",
-        Header: "Location",
-        cell: (props) => (
-          <p style={{ textAlign: "center" }}>{props.getValue().street.name}</p>
-        ),
-      },
-      {
-        accessorKey: "action",
-        Header: "Action",
-        cell: (props) => (
-          <button
-            type="button"
-            class="btn btn-outline-info"
-            onClick={() => {
-              const rowIndex = props.row.index;
-              const columnId = "action"; // Assuming "action" is the accessorKey
-              const value = props.row.original; // The entire row data
-
-              // Call the viewData function with the parameters
-              table.options.meta.viewData(rowIndex, columnId, value);
-            }}
-          >
-            know more
-          </button>
-        ),
-      },
     ],
+    // columns: [
+    //   {
+    //     accessorKey: "picture",
+    //     Header: "Picture",
+    //     cell: (props) => (
+    //       <div>
+    //         <img
+    //           src={props.getValue()?.medium}
+    //           alt="person logo"
+    //           style={{ borderRadius: 30 }}
+    //         />
+    //       </div>
+    //     ),
+    //   },
+    //   {
+    //     accessorKey: "name",
+    //     Header: "Contact Info",
+    //     cell: nameAndEmailCellRenderer,
+    //   },
+    //   {
+    //     accessorKey: "gender",
+    //     Header: "Gender",
+    //     cell: (props) => (
+    //       <p
+    //         style={{
+    //           backgroundColor: props.getValue() === "male" ? "teal" : "purple",
+    //           textAlign: "center",
+    //           borderRadius: 10,
+    //         }}
+    //       >
+    //         {props.getValue()}
+    //       </p>
+    //     ),
+    //   },
+    //   {
+    //     accessorKey: "location",
+    //     Header: "Location",
+    //     cell: (props) => (
+    //       <p style={{ textAlign: "center" }}>{props.getValue().street.name}</p>
+    //     ),
+    //   },
+    //   {
+    //     accessorKey: "action",
+    //     Header: "Action",
+    //     cell: (props) => (
+    //       <button
+    //         type="button"
+    //         class="btn btn-outline-info"
+    //         onClick={() => {
+    //           const rowIndex = props.row.index;
+    //           const columnId = "action"; // Assuming "action" is the accessorKey
+    //           const value = props.row.original; // The entire row data
+
+    //           // Call the viewData function with the parameters
+    //           table.options.meta.viewData(rowIndex, columnId, value);
+    //         }}
+    //       >
+    //         know more
+    //       </button>
+    //     ),
+    //   },
+    // ],
     // to update table content, lets try this out
     meta: {
       // Define the viewData function
@@ -114,13 +160,38 @@ const Table = () => {
         console.log("View Data:", { rowIndex, columnId, value });
         // Add your logic to handle the row data here
       },
+      updateData: (rowIndex, columnId, value) => {
+        // eslint-disable-next-line no-undef
+        setData((prev) =>
+          prev.map((row, index) =>
+            index === rowIndex ? { ...row, [columnId]: value } : row
+          )
+        );
+      },
     },
+    state: {
+      columnFilters,
+    },
+    getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
   });
-
+  const onFilterChange = (id, value) => {
+    setColumnFilters((prev) =>
+      prev.filter((f) => f.id !== id).concat({ id, value })
+    );
+    console.log(data);
+  };
+  console.log(columnFilters);
   return (
-    <div>
-      <div
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
+      {/* <Filter
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        onFilterChange={onFilterChange}
+      /> */}
+      {/* <div
         style={{
           display: "flex",
           alignItems: "center",
@@ -147,7 +218,7 @@ const Table = () => {
                       backgroundColor: "gray",
                     }}
                   >
-                    {item.column.columnDef.Header}
+                    {item.column.columnDef.header}
                   </th>
                 ))}
               </tr>
@@ -171,9 +242,10 @@ const Table = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
+      <DynamicTable />
     </div>
   );
 };
 
-export default React.memo(Table);
+export default Table;
