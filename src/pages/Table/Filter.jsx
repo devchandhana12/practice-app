@@ -24,7 +24,7 @@ const Filter = ({ columnFilters, setColumnFilters, onFilterChange }) => {
         }}
         placeholder="Search..."
         value={personName}
-        onChange={(e) => onFilterChange("name", e.target.value)}
+        onChange={(e) => onFilterChange("name_first", e.target.value)}
       />
       <FaSearch />
     </div>
