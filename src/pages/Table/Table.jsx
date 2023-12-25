@@ -5,6 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  createColumnHelper,
 } from "@tanstack/react-table";
 import Filter from "./Filter";
 
@@ -37,9 +38,10 @@ const DynamicTable = () => {
         ),
       },
       {
-        accessorKey: "name",
+        // accessorFn:() => {nam},
+        accessorKey: "name.first",
         header: "Name",
-        cell: (props) => <p>{props.getValue().first}</p>,
+        cell: (props) => <p>{props.getValue()}</p>,
       },
       {
         accessorKey: "login",
@@ -69,12 +71,17 @@ const DynamicTable = () => {
         );
       },
     },
-    state: { columnFilters },
+    state: {
+      columnFilters,
+    },
     getFilteredRowModel: getFilteredRowModel(),
   });
   const onFilterChange = (id, value) => {
-    setColumnFilters((prev) => prev.filter((f) => f.id !== id));
+    setColumnFilters((prev) =>
+      prev.filter((f) => f.id !== id).concat({ id, value })
+    );
   };
+
   return (
     <div>
       <Filter

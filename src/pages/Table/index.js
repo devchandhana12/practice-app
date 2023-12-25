@@ -9,46 +9,9 @@ import {
 import Filter from "./Filter";
 import { data as FData } from "./data";
 import DynamicTable from "./Table";
-
-// TODO: practice filtering, sorting and pagination tomorrow = 22/12/23
-// FIXME: Also, use memo and other hooks to resolve the issue
 const Table = () => {
   const [data, setData] = React.useState(FData);
   const [columnFilters, setColumnFilters] = React.useState([]);
-
-  // api call
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "https://randomuser.me/api/?results=100"
-  //       );
-  //       setData(response.data.results);
-  //       console.log(response.data.results);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   })();
-  // }, [setData]);
-
-  // Define custom cell renderer for the "Name and Email" column
-  const nameAndEmailCellRenderer = (props) => {
-    const email = props.row.original.email;
-    const name = `${props.row.original.name.first} ${props.row.original.name.last}`;
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <p>{email}</p>
-        <p>{name}</p>
-      </div>
-    );
-  };
 
   // table instance
   const table = useReactTable({
@@ -91,69 +54,7 @@ const Table = () => {
         ),
       },
     ],
-    // columns: [
-    //   {
-    //     accessorKey: "picture",
-    //     Header: "Picture",
-    //     cell: (props) => (
-    //       <div>
-    //         <img
-    //           src={props.getValue()?.medium}
-    //           alt="person logo"
-    //           style={{ borderRadius: 30 }}
-    //         />
-    //       </div>
-    //     ),
-    //   },
-    //   {
-    //     accessorKey: "name",
-    //     Header: "Contact Info",
-    //     cell: nameAndEmailCellRenderer,
-    //   },
-    //   {
-    //     accessorKey: "gender",
-    //     Header: "Gender",
-    //     cell: (props) => (
-    //       <p
-    //         style={{
-    //           backgroundColor: props.getValue() === "male" ? "teal" : "purple",
-    //           textAlign: "center",
-    //           borderRadius: 10,
-    //         }}
-    //       >
-    //         {props.getValue()}
-    //       </p>
-    //     ),
-    //   },
-    //   {
-    //     accessorKey: "location",
-    //     Header: "Location",
-    //     cell: (props) => (
-    //       <p style={{ textAlign: "center" }}>{props.getValue().street.name}</p>
-    //     ),
-    //   },
-    //   {
-    //     accessorKey: "action",
-    //     Header: "Action",
-    //     cell: (props) => (
-    //       <button
-    //         type="button"
-    //         class="btn btn-outline-info"
-    //         onClick={() => {
-    //           const rowIndex = props.row.index;
-    //           const columnId = "action"; // Assuming "action" is the accessorKey
-    //           const value = props.row.original; // The entire row data
 
-    //           // Call the viewData function with the parameters
-    //           table.options.meta.viewData(rowIndex, columnId, value);
-    //         }}
-    //       >
-    //         know more
-    //       </button>
-    //     ),
-    //   },
-    // ],
-    // to update table content, lets try this out
     meta: {
       // Define the viewData function
       viewData: (rowIndex, columnId, value) => {
@@ -179,19 +80,18 @@ const Table = () => {
     setColumnFilters((prev) =>
       prev.filter((f) => f.id !== id).concat({ id, value })
     );
-    console.log(data);
   };
-  console.log(columnFilters);
+
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      {/* <Filter
+      <Filter
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
         onFilterChange={onFilterChange}
-      /> */}
-      {/* <div
+      />
+      <div
         style={{
           display: "flex",
           alignItems: "center",
@@ -242,7 +142,7 @@ const Table = () => {
             ))}
           </tbody>
         </table>
-      </div> */}
+      </div>
       <DynamicTable />
     </div>
   );
