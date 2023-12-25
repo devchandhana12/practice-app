@@ -86,7 +86,7 @@ const Table = () => {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <Filter
+      {/* <Filter
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
         onFilterChange={onFilterChange}
@@ -142,7 +142,7 @@ const Table = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
       <DynamicTable />
     </div>
   );

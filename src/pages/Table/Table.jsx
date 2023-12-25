@@ -5,13 +5,15 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  createColumnHelper,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import Filter from "./Filter";
+import ButtonComp from "../../stories/Button";
 
 const DynamicTable = () => {
   const [data, setData] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
+  const [pageCount, setPageCount] = React.useState(1);
   React.useEffect(() => {
     (async () => {
       await axios
@@ -74,6 +76,7 @@ const DynamicTable = () => {
     state: {
       columnFilters,
     },
+    getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
   const onFilterChange = (id, value) => {
@@ -133,6 +136,54 @@ const DynamicTable = () => {
           ))}
         </tbody>
       </table>
+      <div className="d-flex align-items-center justify-content-end">
+        <ButtonComp
+          label={"<"}
+          style={{ backgroundColor: "transparent" }}
+          onClick={() => table.previousPage()}
+          variant="danger"
+        />
+
+        <div
+          style={{
+            backgroundColor: "green",
+            height: 40,
+            width: 40,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          className="rounded"
+        >
+          <p
+            style={{
+              marginTop: 14,
+              fontSize: 20,
+              fontWeight: "bolder",
+            }}
+          >
+            {table.getState().pagination.pageIndex + 1}
+          </p>
+        </div>
+
+        <ButtonComp
+          variant="danger"
+          label={">"}
+          onClick={() => table.nextPage()}
+          style={{ backgroundColor: "transparent" }}
+        />
+        <div className="d-flex align-items-center justify-content-center">
+          <p className="mt-2">Go to page</p>
+          <input
+            placeholder=""
+            value={pageCount}
+            onChange={(e) => {
+              setPageCount(e.target.value);
+              table.setPageIndex(pageCount);
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 };
