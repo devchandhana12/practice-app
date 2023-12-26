@@ -1,13 +1,16 @@
 import React from "react";
-import renderer from "react-test-renderer";
+import { render } from "@testing-library/react";
 import App from "../App";
-test("demo", () => {
-  expect(true).toBe(true);
-});
+import "resize-observer-polyfill";
 
-describe("Jest Snapshot testing suite", () => {
-  it("Matches DOM Snapshot", () => {
-    const domTree = renderer.create(<App />).toJSON();
-    expect(domTree).toMatchSnapshot();
-  });
+global.ResizeObserver = jest.fn(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}));
+
+it("should take a snapshot", () => {
+  const { asFragment } = render(<App />);
+
+  expect(asFragment()).toMatchSnapshot();
 });
