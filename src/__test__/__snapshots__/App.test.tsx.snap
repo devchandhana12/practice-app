@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should take a snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="App"
+  >
+    <div>
+      <div
+        class="recharts-responsive-container"
+        style="background-color: black; margin-top: 50px; width: 70%; height: 500px; min-width: 0;"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
