@@ -8,7 +8,7 @@ const SubMenu: React.FC<SubmenuProps> = ({ data }) => {
   console.log(choice);
   console.log(data);
   React.useEffect(() => {
-    if (choice) {
+    if (choice !== "") {
       (async () => {
         await axios
           .get(`https://fakestoreapi.com/products/category/${choice}`)
@@ -16,8 +16,7 @@ const SubMenu: React.FC<SubmenuProps> = ({ data }) => {
           .catch((err) => console.log(err));
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setChoice]);
+  }, [choice]);
   return (
     <div
       className=""
@@ -31,7 +30,12 @@ const SubMenu: React.FC<SubmenuProps> = ({ data }) => {
       }}
     >
       {data?.map((item, index) => (
-        <p key={index} className="text-white" onClick={() => setChoice(item)}>
+        <p
+          key={index}
+          className="text-white"
+          onClick={() => setChoice(item)}
+          data-testid="menu"
+        >
           {item}
         </p>
       ))}
