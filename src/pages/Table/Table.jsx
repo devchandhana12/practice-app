@@ -8,7 +8,7 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import Filter from "./Filter";
-import ButtonComp from "../../stories/Button";
+import ButtonComp from "../../components/Button";
 
 const DynamicTable = () => {
   const [data, setData] = React.useState([]);

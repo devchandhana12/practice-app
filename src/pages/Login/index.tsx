@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import { LoginImg } from "../../assets";
-import CardComp from "../../stories/CardComp";
+import CardComp from "../../components/Card";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { AuthContext } from "../../contexts/AuthContext";

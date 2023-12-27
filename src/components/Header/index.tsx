@@ -1,16 +1,16 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import { FaSearch } from "react-icons/fa";
-import ButtonComp from "./Button";
-import { AuthContext } from "../contexts/AuthContext";
+import ButtonComp from "../Button";
+import { AuthContext } from "../../contexts/AuthContext";
 
 type User = {
-  user: string;
+  user?: string;
 } | null;
 
 interface HeaderProps {
   value?: any;
-  onChange?: () => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   user?: User;
 }
 
@@ -65,6 +65,7 @@ const Header: React.FC<HeaderProps> = ({ value, onChange, user }) => {
               fontWeight: "bolder",
               fontStyle: "italic",
             }}
+            data-testid="login"
           >
             Login
           </a>

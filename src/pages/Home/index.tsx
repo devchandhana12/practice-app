@@ -2,11 +2,11 @@ import React from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import { AuthContext } from "../../contexts/AuthContext";
-import Header from "../../stories/Header";
+import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import CardComp from "../../stories/CardComp";
+import CardComp from "../../components/Card";
 import SubMenu from "../../components/SubMenu";
-import ButtonComp from "../../stories/Button";
+import ButtonComp from "../../components/Button";
 interface Product {
   id: number;
   title: string;
@@ -34,12 +34,13 @@ const Home = () => {
         .catch((e) => console.log(e));
     })();
   }, []);
-  console.log(cartValue);
+
   const handleCart = () => {
     alert(cartValue);
     setCartValue(cartValue + 1);
   };
   const { user } = React.useContext(AuthContext);
+  console.log(user);
   return (
     <div>
       <Header user={user} />

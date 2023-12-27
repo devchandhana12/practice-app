@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import CardComp from "./CardComp";
+import CardComp from "../components/Card";
 // Define a unique name for the props interface
 interface CardCompProps {
   children: ReactNode[];

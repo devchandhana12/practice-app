@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 import App from "../App";
 import "resize-observer-polyfill";
 
@@ -9,6 +9,7 @@ global.ResizeObserver = jest.fn(() => ({
   disconnect: jest.fn(),
 }));
 
+afterEach(cleanup);
 it("should take a snapshot", () => {
   const { asFragment } = render(<App />);
 

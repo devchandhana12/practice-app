@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import ButtonComp from "./Button";
+import ButtonComp from "../components/Button";
 interface ButtonCompProps {
   label: string;
   variant: "primary" | "secondary" | "danger" | "success";
