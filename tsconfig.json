@@ -16,7 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src", "src/components/Button/__test__/.ts"],
 
   "baseUrl": ".",
   "paths": {

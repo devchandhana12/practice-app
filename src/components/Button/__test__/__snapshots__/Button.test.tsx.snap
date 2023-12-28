@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ButtonComp renders ButtonComp correctly 1`] = `
+<DocumentFragment>
+  <button
+    class="fs-6 fw-bold fst-italic btn btn-primary"
+    style="background-color: blue; font-weight: bold;"
+    type="button"
+  >
+    Click me
+  </button>
+</DocumentFragment>
+`;

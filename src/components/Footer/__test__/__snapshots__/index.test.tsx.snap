@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should match the snapshot of footer 1`] = `
+<DocumentFragment>
+  <div>
+    im a footer to your site
+  </div>
+</DocumentFragment>
+`;

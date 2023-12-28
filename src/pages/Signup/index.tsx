@@ -2,8 +2,8 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import { createClient } from "@supabase/supabase-js";
 import { SignUpImg } from "../../assets";
-import CardComp from "../../stories/CardComp";
-import ButtonComp from "../../stories/Button";
+import CardComp from "../../components/Card";
+import ButtonComp from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import Login from "../Login";
 

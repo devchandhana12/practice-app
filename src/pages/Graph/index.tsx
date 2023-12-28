@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { AuthContext } from "../../contexts/AuthContext";
 const Graph = () => {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
@@ -19,6 +20,7 @@ const Graph = () => {
         .then((res) => setData(res.data.data))
         .catch((err) => console.log(err));
     })();
+    console.log(AuthContext);
   }, []);
   console.log(data);
   return (

@@ -4,6 +4,7 @@ import { Button, ButtonProps as BootstrapButtonProps } from "react-bootstrap";
 interface ButtonProps extends BootstrapButtonProps {
   label?: string | number;
   color?: string;
+  testId?: string;
 }
 
 const ButtonComp: React.FC<ButtonProps> = ({
@@ -14,6 +15,7 @@ const ButtonComp: React.FC<ButtonProps> = ({
   type,
   disabled,
   onClick,
+  testId,
   ...rest
 }) => {
   return (
@@ -25,6 +27,7 @@ const ButtonComp: React.FC<ButtonProps> = ({
       type={type}
       {...rest}
       className="fs-6 fw-bold fst-italic"
+      data-testid={testId}
     >
       {label}
     </Button>

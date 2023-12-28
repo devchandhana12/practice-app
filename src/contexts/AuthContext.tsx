@@ -7,7 +7,7 @@ type User = {
 interface AuthContextProps {
   user: User;
   login: (userData: string | undefined) => void;
-  logout: () => void;
+  logout: () => any;
 }
 
 export const AuthContext = React.createContext<AuthContextProps>({
