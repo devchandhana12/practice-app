@@ -1,43 +1,67 @@
 import React from "react";
 import axios from "axios";
+import { Product } from "../../pages/Home";
 interface SubmenuProps {
   data?: string[] | undefined;
+  setData?: React.Dispatch<React.SetStateAction<Product[] | undefined>>;
 }
-const SubMenu: React.FC<SubmenuProps> = ({ data }) => {
+const SubMenu: React.FC<SubmenuProps> = ({ data, setData }) => {
   const [choice, setChoice] = React.useState<string>("");
   console.log(choice);
   console.log(data);
   React.useEffect(() => {
     if (choice !== "") {
       (async () => {
-        await axios
-          .get(`https://fakestoreapi.com/products/category/${choice}`)
-          .then((res) => console.log(res.data))
-          .catch((err) => console.log(err));
+        try {
+          const response = await axios.get(
+            `https://fakestoreapi.com/products/category/${choice}`
+          );
+          if (setData) {
+            setData(response?.data);
+          }
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+        }
       })();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [choice]);
+
   return (
     <div
       className=""
       style={{
-        // width: 500,
-        backgroundColor: "black",
+        // backgroundColor: "teal",
         height: "100vh",
-        // padding: 3,
         left: 0,
         zIndex: 1,
+        width: 400,
       }}
     >
       {data?.map((item, index) => (
-        <p
-          key={index}
-          className="text-white"
-          onClick={() => setChoice(item)}
-          data-testid="menu"
+        <div
+          style={{
+            width: 200,
+            boxShadow: "revert-layer",
+            borderWidth: 1,
+            borderColor: "red",
+            borderStyle: "solid",
+            margin: 3,
+            borderRadius: 15,
+            transition: "ease-in",
+            cursor: "pointer",
+          }}
         >
-          {item}
-        </p>
+          <p
+            key={index}
+            className="text-white p-2 m-1"
+            onClick={() => setChoice(item)}
+            data-testid="menu"
+          >
+            {item}
+          </p>
+        </div>
       ))}
     </div>
   );
