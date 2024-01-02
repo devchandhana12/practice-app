@@ -68,9 +68,9 @@ exports[`should match snapshot 1`] = `
         class="d-flex"
         style="flex-wrap: wrap; justify-content: center; align-items: center;"
       >
-        <div>
-           
-        </div>
+        <div
+          data-testid="cards"
+        />
       </div>
     </div>
     <div>

@@ -45,21 +45,6 @@ const Home = () => {
     };
     fetchData();
   }, []);
-  React.useEffect(() => {
-    (async () => {
-      await axios
-        .get("https://fakestoreapi.com/products")
-        .then((res: any) => {
-          console.log(res.data);
-          setData(res.data);
-        })
-        .catch((error) => console.log(error));
-      await axios
-        .get("https://fakestoreapi.com/products/categories")
-        .then((res) => setCategories(res.data))
-        .catch((e) => console.log(e));
-    })();
-  }, []);
 
   const handleCart = () => {
     alert(cartValue);
@@ -82,8 +67,7 @@ const Home = () => {
           }}
         >
           {data?.length !== 0 ? (
-            <div>
-              {" "}
+            <div data-testid="cards">
               {data?.map((item) => (
                 <div key={item?.id}>
                   <CardComp
@@ -100,6 +84,7 @@ const Home = () => {
                       src={item.image}
                       className="img-fluid"
                       alt={item.title}
+                      data-testid="itemImage"
                       style={{ height: 300, width: 400 }}
                     />
                     <p className="text-center fs-6 fst-italic mt-3 fw-bolder">
